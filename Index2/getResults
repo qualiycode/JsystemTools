@@ -9,12 +9,8 @@
 #
 # Params
 #
-#BASE_SCRIPT_DIR=/home/dh/Utils/Scripts/getResults v4/
 BASE_DIR="/root/develop/jsystem/runner/log"
 LOG_DIR=${BASE_DIR}/current
-#LOG_DIR=${BASE_DIR}/v1.4.1.3-18-663
-#LOG_DIR=/home/dh/backupLogs/v2.0.0.11-12-18-02-2015-Physical1
-
 
 SED_OUTPUT_FILE=output.html
 SCRIPT_OUTPUT_FILE=output3.html
