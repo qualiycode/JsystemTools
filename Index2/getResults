@@ -1,0 +1,116 @@
+# Written By Dean (21-05-2014).
+# Updated on 23-06-2015
+# Places all the files in the Jsystem log file.
+#
+# Update the BASE DIR inside the script accordingly >
+#
+
+
+#
+# Params
+#
+#BASE_SCRIPT_DIR=/home/dh/Utils/Scripts/getResults v4/
+BASE_DIR="/root/develop/jsystem/runner/log"
+LOG_DIR=${BASE_DIR}/current
+#LOG_DIR=${BASE_DIR}/v1.4.1.3-18-663
+#LOG_DIR=/home/dh/backupLogs/v2.0.0.11-12-18-02-2015-Physical1
+
+
+SED_OUTPUT_FILE=output.html
+SCRIPT_OUTPUT_FILE=output3.html
+
+DST=${BASE_DIR}/${SCRIPT_OUTPUT_FILE}
+INDEX2_FILE=${BASE_DIR}/index2.html
+
+
+echo "Starting Log Script"
+echo "+++++++++++++++++++"
+echo "Base Directory: ${BASE_DIR}" 
+echo "Log Directory: ${LOG_DIR}" 
+echo "";
+
+#
+# Clean Files
+# 
+rm -fr ${BASE_DIR}/outpu*.html;
+rm -fr ${BASE_DIR}/index2.html;
+
+
+#
+#  Copy Report2.html
+# Get all from <ul class="mktree" id="vasona_regression">
+# To </body>
+# 
+echo "Copying Report2 ('${LOG_DIR}/report2.html') to '${BASE_DIR}/${SED_OUTPUT_FILE}'";
+#Extracing the </span><UL mktree to </body>.
+sed -n '/<\/[Ss][pP][aA][nN]><[uU][Ll]/,/<\/BODY>/p' ${LOG_DIR}/report2.html > ${BASE_DIR}/${SED_OUTPUT_FILE};
+#Remove the </span> at the begining of the file.
+sed  's/<\/[Ss][pP][aA][nN]><[uU][Ll]/<ul/g' -i ${BASE_DIR}/${SED_OUTPUT_FILE};
+echo "";
+
+#
+# Generate DST - OUTPUT3.html
+#
+echo "Generate Index2 file";
+cat ${BASE_DIR}/up.html > $DST; 
+sed -e 's/<\/BODY>//g' ${BASE_DIR}/${SED_OUTPUT_FILE} >> $DST;
+cat ${BASE_DIR}/down.html >> $DST;
+echo "";
+
+#
+# Copy Files
+#
+
+cp -f ${BASE_DIR}/index2.html.bak ${BASE_DIR}/index2.html;
+echo "Moving index2.html";
+mv ${BASE_DIR}/index2.html ${LOG_DIR}/index2.html;
+
+echo "Copying results.js";
+cp -f ${BASE_DIR}/results.js ${LOG_DIR}/results.js;
+
+echo "Copying ${BASE_DIR}/${SCRIPT_OUTPUT_FILE} to ${LOG_DIR}/${SCRIPT_OUTPUT_FILE}";
+cp -f ${BASE_DIR}/${SCRIPT_OUTPUT_FILE} ${LOG_DIR}/${SCRIPT_OUTPUT_FILE};
+
+#echo "Copying ${BASE_DIR}/CollapsibleLists.js ${LOG_DIR}/CollapsibleLists.js";
+#cp -f ${BASE_DIR}/CollapsibleLists.js ${LOG_DIR}/CollapsibleLists.js;
+
+#echo "Copying ${BASE_DIR}/button.png ${LOG_DIR}/button.png";
+#cp -f ${BASE_DIR}/button.png ${LOG_DIR}/button.png;
+
+#echo "Copying ${BASE_DIR}/button-closed.png ${LOG_DIR}/button-closed.png";
+#cp -f ${BASE_DIR}/button-closed.png ${LOG_DIR}/button-closed.png;
+
+#echo "Copying ${BASE_DIR}/button-open.png ${LOG_DIR}/button-open.png";
+#cp -f ${BASE_DIR}/button-open.png ${LOG_DIR}/button-open.png;
+
+#echo "Copying ${BASE_DIR}/list-item.png ${LOG_DIR}/list-item.png";
+#cp -f ${BASE_DIR}/list-item.png ${LOG_DIR}/list-item.png;
+
+#echo "Copying ${BASE_DIR}/list-item-last-open.png ${LOG_DIR}/list-item-last-open.png";
+#cp -f ${BASE_DIR}/list-item-last-open.png ${LOG_DIR}/list-item-last-open.png;
+
+#echo "Copying ${BASE_DIR}/list-item-open.png ${LOG_DIR}/list-item-open.png";
+#cp -f ${BASE_DIR}/list-item-open.png ${LOG_DIR}/list-item-open.png;
+
+#echo "Copying ${BASE_DIR}/list-item-root.png ${LOG_DIR}/list-item-root.png";
+#cp -f ${BASE_DIR}/list-item-root.png ${LOG_DIR}/list-item-root.png;
+
+#chown dh:dh ${LOG_DIR}/CollapsibleLists.js;
+#chown dh:dh ${LOG_DIR}/button.png;
+#chown dh:dh ${LOG_DIR}/button-closed.png;
+#chown dh:dh ${LOG_DIR}/button-open.png;
+#chown dh:dh ${LOG_DIR}/list-item.png;
+#chown dh:dh ${LOG_DIR}/list-item-last-open.png;
+#chown dh:dh ${LOG_DIR}/list-item-open.png;
+#chown dh:dh ${LOG_DIR}/list-item-root.png;
+
+echo "";
+
+#
+# Done !
+#
+echo "New Log Format Created!";
+echo "${LOG_DIR}/index2.html";
+#echo "Please copy \"index2.html\" and \"${SCRIPT_OUTPUT_FILE}\" files to log folder";
+
+rm -f ${BASE_DIR}/outpu*.html;
